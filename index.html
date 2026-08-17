@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Johor Family Gathering · Itinerary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --jungle:#0e2a1c;
+  --jungle-2:#14382a;
+  --leaf:#4aa267;
+  --leaf-soft:#d9ecdd;
+  --cream:#f7f1e3;
+  --paper:#fffdf7;
+  --ink:#233429;
+  --muted:#6b7a6f;
+  --terr:#d97742;
+  --terr-soft:#f7e4d6;
+  --gold:#c99b3f;
+  --line:#e5dcc8;
+  --radius:20px;
+  --shadow:0 10px 30px rgba(20,46,34,.10);
+  --shadow-lg:0 22px 50px rgba(20,46,34,.16);
+  --serif:"Fraunces", Georgia, serif;
+  --sans:"Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ================= HERO ================= */
+.hero{position:relative;color:#f4efe2;background:
+  radial-gradient(1200px 500px at 80% -10%, #1d5236 0%, transparent 60%),
+  radial-gradient(1000px 600px at -10% 110%, #24513a 0%, transparent 55%),
+  linear-gradient(160deg,var(--jungle) 0%,var(--jungle-2) 55%,#0a1f15 100%);
+  padding:64px 0 44px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;opacity:.16;
+  background-image:radial-gradient(circle at 1px 1px,#ffffff 1px,transparent 0);background-size:26px 26px}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:600;color:#cfe6d6;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);padding:7px 14px;border-radius:999px;margin-bottom:22px}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+h1{font-family:var(--serif);font-size:clamp(32px,5.4vw,56px);line-height:1.05;font-weight:600;
+  letter-spacing:-.01em;text-wrap:balance}
+.hero h1 em{font-style:italic;color:#e3c17a}
+.sub{max-width:640px;margin:18px 0 26px;color:#c9d8cf;font-size:16px}
+.meta{display:flex;flex-wrap:wrap;gap:10px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);padding:9px 16px;border-radius:12px;font-size:13.5px;color:#e8efe9}
+.chip b{font-weight:600;color:#fff}
+.chip svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.8}
+
+/* Stats strip */
+.stats{background:var(--paper);border:1px solid var(--line);border-top:0;border-radius:0 0 var(--radius) var(--radius);
+  box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(4,1fr);text-align:center;margin-top:-2px}
+.stat{padding:20px 8px}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat .num{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--jungle)}
+.stat .lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(3){border-left:0}.stat:nth-child(n+3){border-top:1px solid var(--line)}}
+
+/* Day nav */
+.daynav{position:sticky;top:0;z-index:40;background:rgba(247,241,227,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:10px 0}
+.daypills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 2px}
+.daypills::-webkit-scrollbar{display:none}
+.pill{flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:9px 15px;border-radius:12px;border:1px solid var(--line);
+  background:#fff;cursor:pointer;color:var(--ink);transition:.15s;font-weight:600;font-size:13.5px}
+.pill:hover{border-color:var(--leaf);transform:translateY(-1px)}
+.pill .d{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--leaf)}
+.pill small{display:block;font-weight:500;color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.pill.active{background:var(--jungle);border-color:var(--jungle);color:#fff}
+.pill.active .d{color:#ffe2a8}
+.pill.active small{color:#cfe6d6}
+
+/* Day panels */
+.daypanel{display:none;padding:34px 0 20px;animation:fadeIn .4s ease}
+.daypanel.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.dayhead{display:flex;align-items:flex-start;gap:16px;margin-bottom:6px}
+.daynum{flex:0 0 auto;width:66px;height:80px;border-radius:16px;background:linear-gradient(160deg,var(--terr),#b95f2c);
+  color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--shadow)}
+.daynum .big{font-family:var(--serif);font-size:32px;font-weight:700;line-height:1}
+.daynum .of{font-size:11px;letter-spacing:.08em;opacity:.85}
+.daytitle h2{font-family:var(--serif);font-size:28px;font-weight:600;color:var(--jungle);line-height:1.1}
+.daytitle .date{color:var(--terr);font-weight:600;font-size:14px;margin-top:4px}
+.daytitle .vibe{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:600px}
+.daymeta{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 26px}
+.tchips{color:var(--muted);font-size:12px;background:#eef1e8;padding:6px 12px;border-radius:999px;font-weight:500}
+
+/* Timeline */
+.tl{position:relative}
+.tl::before{content:"";position:absolute;left:24px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.stop{position:relative;padding-left:68px;margin-bottom:26px}
+.stop::before{content:"";position:absolute;left:17px;top:30px;width:16px;height:16px;border-radius:50%;
+  background:var(--paper);border:4px solid var(--leaf);box-shadow:0 0 0 4px var(--leaf-soft)}
+.stop.home::before{border-color:var(--gold)}
+.cards{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:0;overflow:hidden;transition:transform .18s}
+.cards:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.cardtop{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:12px 18px;border-bottom:1px solid var(--line);background:#fbf8ef}
+.tb{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;padding:6px 12px;border-radius:8px}
+.tb.lunch{background:var(--terr-soft);color:#a5552a}
+.tb.dinner{background:#f5e6cc;color:#8a6420}
+.tb.breakfast{background:#fdf0d3;color:#95702a}
+.tb.activity{background:var(--leaf-soft);color:#2c6e44}
+.tb.travel{background:#e8e4d0;color:#6b5d1f}
+.tb.home{background:#e6e2f4;color:#4b4290}
+.tb.tea{background:#f7e2e2;color:#a04a4a}
+.time{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--jungle)}
+.cardbody{padding:18px 20px 20px}
+.stop h3{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--jungle);line-height:1.15}
+.stop h3 .em{color:var(--terr)}
+.addr{color:var(--muted);font-size:13px;margin-top:4px;display:flex;gap:7px;align-items:flex-start}
+.addr svg{flex:0 0 auto;margin-top:1px;width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:1.7}
+.travel{display:inline-flex;align-items:center;gap:7px;margin-top:12px;background:var(--jungle);
+  color:#fff;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:999px}
+.travel svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:2}
+.note{display:block;color:var(--ink);font-size:14.5px;margin-top:12px;max-width:660px}
+.note b{color:var(--jungle)}
+.note ul, .picks ul{margin:8px 0 0;padding-left:20px}
+.note li{margin:4px 0;font-size:14px}
+.tagrow{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.tag{font-size:12px;font-weight:500;color:var(--muted);background:#eef1e8;padding:5px 11px;border-radius:999px}
+.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:11px;font-weight:600;
+  font-size:14px;text-decoration:none;transition:.15s}
+.btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2}
+.btn.map{background:var(--jungle);color:#fff}
+.btn.map:hover{background:#173d2c}
+.btn.dir{background:#fff;color:var(--jungle);border:1.5px solid var(--jungle)}
+.btn.dir:hover{background:var(--leaf-soft)}
+.picks{margin-top:14px;background:var(--leaf-soft)/*.5*/;border-left:3px solid var(--leaf);
+  border-radius:0 12px 12px 0;padding:12px 16px}
+.picks h4{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--jungle);font-weight:700;margin-bottom:4px}
+.picks p,.picks li{font-size:13.5px;color:var(--ink)}
+
+/* prev/next */
+.adj{display:flex;justify-content:space-between;gap:12px;margin:6px 0 10px}
+.adj button{border:1px solid var(--line);background:#fff;color:var(--jungle);padding:13px 18px;border-radius:12px;
+  font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:.15s}
+.adj button:hover{border-color:var(--leaf);background:var(--leaf-soft)}
+.adj button:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+.adj svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.2;fill:none}
+
+footer{color:var(--muted);font-size:12.5px;text-align:center;padding:26px 0 40px;border-top:1px solid var(--line);margin-top:10px}
+footer b{color:var(--jungle)}
+@media(max-width:560px){.stop{padding-left:56px}.tl::before{left:17px}.stop::before{left:11px}.daynum{width:58px;height:72px}.cardtop{flex-wrap:wrap}.daytitle h2{font-size:24px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap" style="position:relative;z-index:1">
+    <span class="badge"><span class="dot"></span> Family Gathering · 27 Aug – 1 Sep 2026</span>
+    <h1>Johor Family <em>Gathering</em>, Kulai &amp; JB</h1>
+    <p class="sub">Six days of home-cooked meals, late-night dim sum, cave-sized game rooms,
+      clouds of kakigori by a lake, and plenty of durian-adjacent adventures across Kulai, Senai and Johor Bahru.</p>
+    <div class="meta">
+      <span class="chip"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg><span>Base · <b>Jalan Ceria 43, Bandar Putra, Kulai</b></span></span>
+      <span class="chip"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span><b>6</b> days</span></span>
+      <span class="chip"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M21 4l-9 9M21 4h-6M21 4v6"/></svg><span>All drive times approx.</span></span>
+    </div>
+  </div>
+</header>
+
+<nav class="daynav">
+  <div class="wrap daypills" id="pills"></div>
+</nav>
+
+<main class="wrap">
+
+  <!-- Day 1 -->
+  <section class="daypanel" id="day1">
+    <div class="dayhead">
+      <div class="daynum"><span class="of">DAY</span><span class="big">1</span></div>
+      <div class="daytitle">
+        <h2>Arrival &amp; First Kulai Feasts</h2>
+        <div class="date">Thu · 27 August</div>
+        <div class="vibe">Land, drop bags, and ease in with the three great Kulai classics — a hearty lei cha lunch, an air-conditioned grocery run, then your pick of Japanese or sambal-laden nasi lemak for dinner.</div>
+      </div>
+    </div>
+    <div class="daymeta">
+      <span class="tchips">🧳 Arrival day · keep it light</span>
+      <span class="tchips">Mostly around Indahpura, 5–15 min apart</span>
+    </div>
+    <div class="tl">
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb travel">✈ Arrival</span><span class="time">Around noon</span></div>
+          <div class="cardbody">
+            <h3>Arrive in Kulai · settle in at <span class="em">Jalan Ceria 43</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Bandar Putra, 81000 Kulai, Johor (cluster home, easy parking)</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>Drop bags, quick breather before lunch</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb lunch">Lunch</span><span class="time">12:30 pm</span></div>
+          <div class="cardbody">
+            <h3>Restoran Ming Xuan &nbsp;<span style="color:var(--muted);font-weight:600;font-size:14px">· Lei Cha</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>143 Jln Jambu Mawar, Taman Indahpura · ★ 4.4 · opens 9:30 am</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~12 min from Jalan Ceria 43</span>
+            <p class="note">The signature Hakka <b>lei cha (擂茶)</b> thick rice-tea served with a spread of chopped veg, tofu, peanuts and greens — fun for the whole family to mix their own bowl. Light, healthy and the proper local welcome.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.4 · Chinese</span><span class="tag">Veg-friendly</span><span class="tag">Good for kids</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/YSqMQLa5SXEm278K7">Open in Maps <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg></a>
+              <a class="btn dir" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/Jalan+Ceria+43,+Bandar+Putra,+Kulai/Restoran+Ming+Xuan">Directions <svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb activity">Afternoon</span><span class="time">2:30 pm</span></div>
+          <div class="cardbody">
+            <h3>ÆON Mall Kulai &nbsp;<span style="color:var(--muted);font-weight:600;font-size:14px">· Groceries + a movie?</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>F49, Indahpura · ★ 4.1 · 10 am – 10 pm</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~6 min from Ming Xuan</span>
+            <p class="note">One stop for the week: the <b>Jaya Grocer / supermarket</b> to stock the fridges for all the home-cooked meals, plus <b>TGV Cinemas</b> upstairs if anyone fancies a matinee. <b>Vivo Pizza (★4.8)</b> is on Level G if the kids need a snack break.</p>
+            <div class="tagrow"><span class="tag">🛒 Groceries</span><span class="tag">🎬 TGV Cinema</span><span class="tag">🍕 Vivo Pizza ★4.8</span><span class="tag">40 food &amp; drink outlets</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/uxY4qcAymwC54thu5">Open in Maps</a>
+              <a class="btn dir" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/Restoran+Ming+Xuan/%C3%86ON+Mall+Kulai">Directions</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb dinner">Dinner</span><span class="time">6:30 pm</span></div>
+          <div class="cardbody">
+            <h3>Choice: <span class="em">Hinokage Kulai</span> (Japanese)</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>294E Pusat Komersial Indah, Bandar Indahpura · ★ 4.7 · 12–11 pm</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~5 min from ÆON</span>
+            <p class="note">The highest-rated pick of the whole itinerary (<b>★4.7</b>) — a proper little <b>izakaya</b> known for fresh sashimi, hot stone rice, skewers and ramen. Book or go early on a Thursday; it fills fast with the KL–Kulai crowd.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.7</span><span class="tag">🍣 Sashimi</span><span class="tag">🍢 Yakitori</span><span class="tag">🌶 Ramen</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/c5LwTuyHXtCmAKvV7">Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb dinner">Aternative</span><span class="time">6:30 pm</span></div>
+          <div class="cardbody">
+            <h3>Choice: <span class="em">Nasi Lemak Wak Kentut</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>2130 Jalan Susur Kulai 2, Taman Kulai Besar · ★ 4.1 · opens 3 pm</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~10 min from ÆON</span>
+            <p class="note">A Kulai institution famous for its rich, proper-ly coconut <b>sambal and fragrant rice</b> — the name literally means “Grandma who farts” for the spicy sambal kick. Chunky fried chicken, crispy anchovies, egg and peanuts. Lively late-night vibe.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.1</span><span class="tag">🥥 Fragrant sambal</span><span class="tag">🍗 Fried chicken</span><span class="tag">Open til 11:45pm</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/VTMcog3hatJdwUWc8">Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="adj">
+      <button disabled><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Day 1</button>
+      <button onclick="go(2)">Day 2 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- Day 2 -->
+  <section class="daypanel" id="day2">
+    <div class="dayhead">
+      <div class="daynum"><span class="of">DAY</span><span class="big">2</span></div>
+      <div class="daytitle">
+        <h2>Game Day in Mount Austin</h2>
+        <div class="date">Fri · 28 August</div>
+        <div class="vibe">A morning of bamboo-steamer dim sum, a loud afternoon of arcade + strategy games at one of JB's most loved play spaces, then a jungle-beneath-the-trees dinner back toward Kulai.</div>
+      </div>
+    </div>
+    <div class="daymeta">
+      <span class="tchips">🕹 Mr Player — book ahead (recommended)</span>
+      <span class="tchips">Biggest drive of the trip: ~40 min into JB</span>
+    </div>
+    <div class="tl">
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb breakfast">Brunch</span><span class="time">10:30 am</span></div>
+          <div class="cardbody">
+            <h3>Jiah Xiang Dim Sum <span style="color:var(--muted);font-weight:600;font-size:14px;font-family:var(--serif)">佳香点心茶楼</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>229–230 Jalan Kiambang 15, Bandar Indahpura · ★ 4.1 · 7 am–3 pm</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~10 min from Jalan Ceria 43</span>
+            <p class="note">Push the tables together and go <b>family-style</b>: har gow, siu mai, char siu bao hot from the steamers, plus lau sha bao and glutinous rice. Go before 1 pm — it closes at 3 pm and the trays fly off.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.1</span><span class="tag">🥟 Har gow &amp; siu mai</span><span class="tag">🍞 Char siu bao</span><span class="tag">Closes 3pm</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/ecRA4eLCR4iwDmCd6">Open in Maps</a>
+              <a class="btn dir" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/Jalan+Ceria+43,+Bandar+Putra,+Kulai/229+30,+Jalan+Kiambang+15,+Bandar+Indahpura">Directions</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb activity">3:00 pm</span><span class="time">~2.5 hours</span></div>
+          <div class="cardbody">
+            <h3>Mr Player Mount Austin</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>The Harbour @ Austin Green, Jln Mutiara Emas Utama, JB · ★ 4.9 (336 reviews) · 12–10 pm</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~40 min drive from the dim sum spot</span>
+            <p class="note">Two floors of centre-court energy — <b>laser tag, escape-style control rooms, hide-and-seek, lava and strike game modes</b>, plus free pool tables and basketball arcade machines. Local Guides rate it "fantastic for 2–8 people, kids and adults both". <b>Their #1 tip: book a time slot in advance</b> and give yourself a full 2 hours — one hour genuinely isn't enough.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.9 · 336 reviews</span><span class="tag">🔫 Laser tag</span><span class="tag">🎱 Free pool</span><span class="tag">🎮 Arcade</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/Ub5WaXHukiSrs74QA">Open in Maps</a>
+              <a class="btn dir" target="_blank" rel="noopener" href="http://mrplayer.com.my/">mrplayer.com.my</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb dinner">Dinner</span><span class="time">7:00 pm</span></div>
+          <div class="cardbody">
+            <h3>Nenek in Forest</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>B228–B230 Jalan Tun Abdul Razak, Wadi Hana, JB · ★ 4.5 · opens 11:30 am</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~15 min from Mr Player</span>
+            <p class="note">Dinner under the trees — a leafy, jungle-themed spot serving grandma-style (<i>nenek</i> = grandmother) love: rich curry lamb, pineapple fried rice, and comforting Malay-Chinese home dishes. The trip kitchen's <b>Nasi Lemak Wak Kentut</b> thematically continues here, but done slower and cosier.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.5</span><span class="tag">🌿 Jungle vibe</span><span class="tag">🍛 Curry lamb</span><span class="tag">🍍 Pineapple fried rice</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/9eXc3NhZ32AwUoy9A">Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="adj">
+      <button onclick="go(1)"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Day 1</button>
+      <button onclick="go(3)">Day 3 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- Day 3 -->
+  <section class="daypanel" id="day3">
+    <div class="dayhead">
+      <div class="daynum"><span class="of">DAY</span><span class="big">3</span></div>
+      <div class="daytitle">
+        <h2>Lake-Side Shaved Ice &amp; a Night Market</h2>
+        <div class="date">Sat · 29 August</div>
+        <div class="vibe">A slow home-cooked morning, then an easy mid-afternoon over to Senai for kakigori by a tiny lake, and a big sizzling Saturday night market in Skudai to close the day.</div>
+      </div>
+    </div>
+    <div class="daymeta">
+      <span class="tchips">🥣 Breakfast (Choy Ban) &amp; lunch — home cooked</span>
+      <span class="tchips">Tea place opens 3 pm</span>
+    </div>
+    <div class="tl">
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb home">At Home</span><span class="time">Morning</span></div>
+          <div class="cardbody">
+            <h3>Breakfast: <span class="em">Choy Ban</span> from Wei Yong</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Ceria 43, Bandar Putra, Kulai</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>No driving — enjoy the lazy start</span>
+            <p class="note">The family's beloved <b>choy ban (菜粿)</b> — soft steamed rice-cake dumplings with chive/preserved-radish fillings. Perfect breakfast share with a pot of tea before a chill morning.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb home">At Home</span><span class="time">12:30 pm</span></div>
+          <div class="cardbody">
+            <h3>Lunch: <span class="em">Home Cooked</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Ceria 43</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>Relax, then head out mid-afternoon</span>
+            <p class="note">Fire up what you stocked at ÆON on Day 1. An easy afternoon to let the kids nap and the elders sit back before the 4 pm tea trip.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb tea">Tea · 4:00 pm</span><span class="time">~1.5 hours</span></div>
+          <div class="cardbody">
+            <h3>The Tiny Lake <span style="color:var(--muted);font-weight:600;font-size:14px;font-family:var(--serif)">小幸湖</span> · Senai</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Senai 10, Kampung Baru Senai · ★ 3.9 · opens 3 pm (~11 pm)</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~15 min from Jalan Ceria 43</span>
+            <p class="note">A cute panda-decorated café right beside a small calm lake — reviewers rave about the <b>kakigori (mountain shaved ice), bingsu, waffles and black glutinous rice desserts</b>. Grab a lake-view table, paddle a <b>duckling boat</b>, and there are plenty of lake-side photo spots ("hotpots for photoshooting" as one local puts it).</p>
+            <div class="tagrow"><span class="tag">🍧 Kakigori</span><span class="tag">🧇 Waffles</span><span class="tag">🦆 Duckling boats</span><span class="tag">📸 Photo spots</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/XvjegYLYoePDTgC48">Open in Maps</a>
+              <a class="btn dir" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/Jalan+Ceria+43,+Bandar+Putra,+Kulai/The+Tiny+Lake,+Jalan+Senai+10,+Kampung+Baru+Senai">Directions</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb dinner">Dinner</span><span class="time">7:00 pm</span></div>
+          <div class="cardbody">
+            <h3>TUTA Saturday Night Market &nbsp;<span style="color:var(--muted);font-weight:600;font-size:14px">· Pasar Malam</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jln Perkasa 5, Taman Ungku Tun Aminah, Skudai · ★ 4.1 · Sat, from 4:30 pm</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~25 min from The Tiny Lake</span>
+            <p class="note">One of JB's biggest Saturday pasar malams — <b>70+ stalls</b> (go between 7–9 pm for peak buzz). Graze your way down: fresh <b>otak-otak</b>, satay, popia goreng, apam balik, goreng pisang and Nyonya kueh, followed by the classic cold <b>air balung/cendol</b>. Casual, sizzly family fun.</p>
+            <div class="tagrow"><span class="tag">🌭 70+ food stalls</span><span class="tag">🍢 Satay</span><span class="tag">🐟 Otak-otak</span><span class="tag">🧁 Nyonya kueh</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/VmsriXN3tDu8V2R79">Open in Maps</a>
+              <a class="btn dir" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/The+Tiny+Lake,+Senai/Taman+Ungku+Tun+Aminah+Saturday+Night+Market">Directions</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="adj">
+      <button onclick="go(2)"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Day 2</button>
+      <button onclick="go(4)">Day 4 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- Day 4 -->
+  <section class="daypanel" id="day4">
+    <div class="dayhead">
+      <div class="daynum"><span class="of">DAY</span><span class="big">4</span></div>
+      <div class="daytitle">
+        <h2>Church, Croissants &amp; Clay</h2>
+        <div class="date">Sun · 30 August</div>
+        <div class="vibe">Worship in the morning, a flaky pastry lunch in JB, then a hands-on afternoon throwing pottery before a Bali-inspired dinner in Taman Pelangi — a proper "Sunday moulding" day.</div>
+      </div>
+    </div>
+    <div class="daymeta">
+      <span class="tchips">🏫 Sunday church service (am)</span>
+      <span class="tchips">Zhongyue — book a pottery session</span>
+    </div>
+    <div class="tl">
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb breakfast">Breakfast</span><span class="time">8:00 am</span></div>
+          <div class="cardbody">
+            <h3>Roti Canai at Nasi Kandar Hijrah Kulai</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>15–17 Jalan Rimbun 1, Indahpura · ★ 4.7 · opens 8 am</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~10 min from Jalan Ceria 43</div>
+            <p class="note">A proper mamak (★4.7) — hot buttered <b>roti canai</b> with dhal, plus nasi kandar if anyone's hungrier. What the kids wanted before church.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.7</span><span class="tag">🫓 Roti canai</span><span class="tag">🍛 Nasi kandar</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/qGhywwVDK8nd2LnP8">Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb activity">Morning</span><span class="time">9:30 am</span></div>
+          <div class="cardbody">
+            <h3>Church Service</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Local church · a short hop from Kulai</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~5 min from the mamak</span>
+            <p class="note">Then straight to lunch in JB after the service wraps.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb lunch">Lunch</span><span class="time">12:30 pm</span></div>
+          <div class="cardbody">
+            <h3>Nimmies Pastry Café</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>171 Jln Beringin, Taman Melodies, JB · ★ 4.5 · 8 am–11 pm (women-owned)</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~40 min from Kulai</span>
+            <p class="note">"Happiness comes in flakes and layers" — a beloved cinnamon-roll / pastry café. All-day café menu (pastas, eggs, croissants) plus their famous <b>flaky cinnamon rolls and layered pastries</b>. Sweet enough to double as the family's dessert stop.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.5</span><span class="tag">🥐 Croissants</span><span class="tag">🍮 Cinnamon rolls</span><span class="tag">👩‍🍳 Women-owned</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/nn3CLSYzmynr2Ujs9">Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb activity">Afternoon</span><span class="time">2:30 pm</span></div>
+          <div class="cardbody">
+            <h3>Zhongyue Pottery &nbsp;+&nbsp; <span class="em">Pickleball</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Lot 1566, Kawasan Perindustrian Dewani / Jln Biru, Taman Pelangi, JB · ★ 5.0</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~15 min from Nimmies</span>
+            <p class="note">A hands-on <b>wheel-throwing &amp; hand-building studio</b> that welcomes all ages, kids included (they even make their own pottery lights). Pickleball after = a fun, fast family court game nearby. There's nothing like sending a lump of clay around to bond everyone.</p>
+            <div class="tagrow"><span class="tag">⭐ 5.0</span><span class="tag">🏺 Wheel throwing</span><span class="tag">🧒 Kid-friendly</span><span class="tag">🎾 Pickleball</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://share.google/vNTXwjvAHGznbIFJ8">Open in Maps</a>
+              <a class="btn dir" target="_blank" rel="noopener" href="https://www.instagram.com/zhongyue.pottery/">Instagram · book session</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop">
+        <div class="cards">
+          <div class="cardtop"><span class="tb dinner">Dinner</span><span class="time">6:30 pm</span></div>
+          <div class="cardbody">
+            <h3>JomBali Village</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>No.39A–39B Jalan Perang, Taman Pelangi, JB · ★ 4.5 · opens 1 pm</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>~15 min from pottery (then ~45 min home)</span>
+            <p class="note">"The little Bali" — a tropical, open-air courtyard serving <b>modern Indonesian-Bali flavours, served fresh daily with a side of good vibes</b>. Think nasi campur, soto, and comforting Bali-style curries under string lights. A lovely, different kind of evening out before the long drive back.</p>
+            <div class="tagrow"><span class="tag">⭐ 4.5</span><span class="tag">🌴 Bali vibe</span><span class="tag">🍛 Nasi campur</span><span class="tag">🌮 Soto</span></div>
+            <div class="actions">
+              <a class="btn map" target="_blank" rel="noopener" href="https://maps.app.goo.gl/4znQV7BqBMLx1rQ37">Open in Maps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="adj">
+      <button onclick="go(3)"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Day 3</button>
+      <button onclick="go(5)">Day 5 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- Day 5 -->
+  <section class="daypanel" id="day5">
+    <div class="dayhead">
+      <div class="daynum"><span class="of">DAY</span><span class="big">5</span></div>
+      <div class="daytitle">
+        <h2>Birthday at Home</h2>
+        <div class="date">Mon · 31 August</div>
+        <div class="vibe">A full rest-and-celebrate day at Jalan Ceria 43: birthday lunch, then a flexible afternoon of board games / handicraft / a game-master session — all on the couch, all together.</div>
+      </div>
+    </div>
+    <div class="daymeta">
+      <span class="tchips">🎂 Birthday celebration</span>
+      <span class="tchips">No driving — full home day</span>
+    </div>
+    <div class="tl">
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb home">At Home</span><span class="time">Breakfast</span></div>
+          <div class="cardbody">
+            <h3>Bread &amp; spreads</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Ceria 43</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>Sleep in</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb lunch">Lunch</span><span class="time">1:00 pm</span></div>
+          <div class="cardbody">
+            <h3>Home-cooked <span class="em">Birthday Lunch</span> 🎂</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Ceria 43</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>The main event of the trip</span>
+            <p class="note">The reason everyone flew in. Butcher's best cooking, the birthday cake, candles, and a table laugh so loud the neighbours will hear it. Don't forget a group photo on the couch.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb activity">Afternoon</span><span class="time">3:00 pm</span></div>
+          <div class="cardbody">
+            <h3>Board Games · Handicraft · <span class="em">Game Master</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Ceria 43 — plan open</div>
+            <div class="picks">
+              <h4>Ideas the family can grab</h4>
+              <ul>
+                <li><b>Party board games</b>: Codenames, Just One, Telestrations, Uno — big-group, all-ages, zero-setup fun.</li>
+                <li><b>Handicraft corner</b>: the kids (and reluctant parents) try a small DIY — air-dry clay figures, beading, or the mini canvas paints bought at ÆON.</li>
+                <li><b>Game-master showdown</b>: nominate one person as GM to run a quick escape-room/riddle session, or a family quiz with a prize.</li>
+                <li>Got a projector? A living-room movie marathon after dark is a guaranteed crowd-pleaser.</li>
+              </ul>
+            </div>
+            <div class="tagrow"><span class="tag">🎲 Board games</span><span class="tag">✂️ Handicraft</span><span class="tag">🎮 Game master</span><span class="tag">🎬 Movie night</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb dinner">Dinner</span><span class="time">7:00 pm</span></div>
+          <div class="cardbody">
+            <h3>Home-cooked dinner &amp; leftovers</h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Ceria 43</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>Comfort food + birthday cake round two</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="adj">
+      <button onclick="go(4)"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Day 4</button>
+      <button onclick="go(6)">Day 6 <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <!-- Day 6 -->
+  <section class="daypanel" id="day6">
+    <div class="dayhead">
+      <div class="daynum"><span class="of">DAY</span><span class="big">6</span></div>
+      <div class="daytitle">
+        <h2>One Last Steamer</h2>
+        <div class="date">Tue · 1 September</div>
+        <div class="vibe">Stretch out the last morning over homemade dim sum before packing up and heading off with full hearts (and stomachs).</div>
+      </div>
+    </div>
+    <div class="daymeta">
+      <span class="tchips">🧳 Departure day</span>
+      <span class="tchips">Bittersweet final breakfast</span>
+    </div>
+    <div class="tl">
+
+      <div class="stop home">
+        <div class="cards">
+          <div class="cardtop"><span class="tb breakfast">Breakfast</span><span class="time">9:00 am</span></div>
+          <div class="cardbody">
+            <h3>Home-made <span class="em">Dim Sum</span></h3>
+            <div class="addr"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Jalan Ceria 43</div>
+            <span class="travel"><svg viewBox="0 0 24 24"><path d="M13 5h6v6M12 12l7-7"/><path d="M5 19h6v1H5z"/></svg>The home kitchen, one last time</span>
+            <p class="note">Homemade dumplings and buns from the family — a perfect bookend to Day 2's dim sum outing. Then pack, load the cars, and say your goodbyes. <b>Drive safe.</b></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="adj">
+      <button onclick="go(5)"><svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Day 5</button>
+      <button disabled>End <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </section>
+
+  <footer>
+    <b>Salam sejahtera &amp; happy gathering</b> · Johor Family Itinerary · 27 Aug – 1 Sep 2026 · Jalan Ceria 43, Bandar Putra, Kulai<br>
+    Drive times are approximate estimates from Google Maps research and vary with traffic, especially evenings and school-run hours. Confirm opening hours / book sessions (Mr Player, Zhongyue pottery) in advance.
+  </footer>
+</main>
+
+<script>
+const days = Array.from({length:6},(_,i)=>i+1);
+const buildPills = () => {
+  const wrap = document.getElementById('pills');
+  const names=['Arrival','Mount Austin','Lake & Market','Church & Clay','Birthday','Departure'];
+  const dates=['27·Aug','28·Aug','29·Aug','30·Aug','31·Aug','01·Sep'];
+  days.forEach(d=>{
+    const b=document.createElement('button');
+    b.className='pill'+(d===1?' active':'');
+    b.id='pill'+d;
+    b.innerHTML=`<span class="d">${d}</span><span><span>${names[d-1]}</span><small>${dates[d-1]}</small></span>`;
+    b.onclick=()=>go(d);
+    wrap.appendChild(b);
+  });
+};
+const go = (d) => {
+  days.forEach(x=>{
+    document.getElementById('day'+x).classList.toggle('on', x===d);
+    const p=document.getElementById('pill'+x);
+    p.classList.toggle('active', x===d);
+    if(x===d) p.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.replaceState(null,'','#'+d);
+};
+window.addEventListener('DOMContentLoaded',()=>{
+  buildPills();
+  const h=parseInt(location.hash.replace('#',''),10);
+  if(h>=1&&h<=6) go(h);
+});
+</script>
+</body>
+</html>
